@@ -42,6 +42,8 @@ function ChatWindow(props) {
   const [maxOrMinIcon, setMaxOrMinIcon] = useState("/images/maximize.png");
   //Escape Button click
   const [escapeButton, setEscapeButton] = useState(false);
+  // Graph data
+  const [graphData, setGraphData] = useState(null);
 
   /**using Escape button to make downbuttonList disappear*/
   useEffect(() => {
@@ -424,6 +426,12 @@ function ChatWindow(props) {
         });
     }
 
+    // Get graph data
+
+    Axios.get(process.env.REACT_APP_BACKEND_URL).then((response) => {
+      setGraphData(response.data.payload);
+    });
+
     // console.log(temp);
   }, []);
 
@@ -705,9 +713,11 @@ function ChatWindow(props) {
 
             <h4>Graph will come here</h4>
 
-            <div className="graph">
-              <Chart />
-            </div>
+            {graphData && (
+              <div className="graph">
+                <Chart graphData={graphData} />
+              </div>
+            )}
           </div>
           {/**Bottom sheet implementation */}
           <ReactBottomsheet
